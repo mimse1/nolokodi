@@ -48,6 +48,16 @@
           "web": "https://www.7tvandalucia.es/video/sevilla/sevilla-7tv-directo/20250723144948001214.html"
         }
       ]
+    },
+    {
+      "name": "Google Drive",
+      "plot": "Vídeos compartidos en Drive",
+      "links": [
+        {
+          "name": "Ejemplo vídeo Drive",
+          "drive": "https://drive.google.com/file/d/ID_DEL_ARCHIVO/view?usp=sharing"
+        }
+      ]
     }
   ]
 }

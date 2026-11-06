@@ -38,6 +38,16 @@ def normalize_url(url):
     return url
 
 
+def drive_video_url(url):
+    """Enlace de Drive (compartir) -> descarga directa con confirmación para archivos grandes."""
+    m = re.search(r"drive\.google\.com/file/d/([\w-]+)", url) or \
+        re.search(r"drive\.google\.com/(?:open|uc)\?(?:.*&)?id=([\w-]+)", url) or \
+        re.fullmatch(r"([\w-]{20,})", url.strip())
+    if not m:
+        return url
+    return "https://drive.usercontent.google.com/download?id=%s&export=download&confirm=t" % m.group(1)
+
+
 def save_cache(raw):
     try:
         xbmcvfs.mkdirs(os.path.dirname(CACHE_JSON))
@@ -123,6 +133,14 @@ def list_links(index):
         return
     for link in cat.get("links", []):
         # Enlace web: "web": "https://..." (pagina con vídeo) o "stream": "https://...m3u8" (directo)
+        drive = (link.get("drive") or "").strip()
+        if drive:
+            name = link.get("name", drive)
+            item = make_item(name, link.get("thumb", ""), link.get("plot", ""))
+            item.setProperty("IsPlayable", "true")
+            url = build_url(action="play_drive", url=drive, name=name)
+            xbmcplugin.addDirectoryItem(HANDLE, url, item, isFolder=False)
+            continue
         web = (link.get("web") or link.get("stream") or "").strip()
         if web:
             name = link.get("name", web)
@@ -228,6 +246,13 @@ def find_media(url, depth=0, seen=None):
     return found
 
 
+def play_drive(url, name):
+    media = drive_video_url(url)
+    log("Reproduciendo Drive: %s" % media)
+    item = xbmcgui.ListItem(label=name, path="%s|User-Agent=%s" % (media, quote(WEB_UA)))
+    xbmcplugin.setResolvedUrl(HANDLE, True, item)
+
+
 def play_web(page_url, name, direct=False):
     if direct:
         media, referer = page_url, ""
@@ -266,6 +291,8 @@ def router(paramstring):
         list_links(params.get("index", 0))
     elif action == "set_url":
         set_url()
+    elif action == "play_drive":
+        play_drive(params.get("url", ""), params.get("name", ""))
     elif action == "play_web":
         play_web(params.get("url", ""), params.get("name", ""), params.get("direct") == "1")
     elif action == "play":
