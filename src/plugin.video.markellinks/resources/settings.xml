@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<settings version="1">
+  <section id="plugin.video.markellinks">
+    <category id="playback" label="Reproduccion">
+      <group id="1">
+        <setting id="horus_module" type="string" label="ID del addon Horus">
+          <level>0</level>
+          <default>script.module.horus</default>
+          <control type="edit" format="string"><heading>ID del addon Horus</heading></control>
+        </setting>
+        <setting id="direct_fallback" type="boolean" label="Si Horus no esta instalado, intentar acestream:// directamente">
+          <level>0</level>
+          <default>true</default>
+          <control type="toggle"/>
+        </setting>
+        <setting id="nolo_style" type="boolean" label="Modo nolokodi (reproducible + setResolvedUrl). Solo si el modo normal falla">
+          <level>0</level>
+          <default>false</default>
+          <control type="toggle"/>
+        </setting>
+        <setting id="show_hash" type="boolean" label="Mostrar el hash del enlace en el titulo">
+          <level>0</level>
+          <default>false</default>
+          <control type="toggle"/>
+        </setting>
+      </group>
+    </category>
+    <category id="list" label="Lista">
+      <group id="1">
+        <setting id="cache_minutes" type="integer" label="Minutos de cache de la lista">
+          <level>0</level>
+          <default>10</default>
+          <constraints><minimum>0</minimum><step>1</step><maximum>240</maximum></constraints>
+          <control type="edit" format="integer"><heading>Minutos de cache</heading></control>
+        </setting>
+        <setting id="max_options" type="integer" label="Maximo de opciones por canal (0 = todas)">
+          <level>0</level>
+          <default>0</default>
+          <constraints><minimum>0</minimum><step>1</step><maximum>50</maximum></constraints>
+          <control type="edit" format="integer"><heading>Maximo de opciones</heading></control>
+        </setting>
+      </group>
+    </category>
+  </section>
+</settings>

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<addon id="plugin.video.markellinks" name="Markel Links" version="1.3.1" provider-name="Venice">
+    <requires>
+        <import addon="xbmc.python" version="3.0.1"/>
+    </requires>
+    <extension point="xbmc.python.pluginsource" library="default.py">
+        <provides>video</provides>
+    </extension>
+    <extension point="xbmc.addon.metadata">
+        <summary lang="es_ES">Enlaces AceStream de Markel Links</summary>
+        <summary lang="en_GB">AceStream links from Markel Links</summary>
+        <description lang="es_ES">Recopila todos los canales y enlaces AceStream publicados en markellinks.app y los reproduce a traves del addon Horus (script.module.horus). Usa la fuente JSON oficial del sitio, con lista M3U y HTML como respaldos, cache local, reescaneo manual y reproduccion directa.</description>
+        <description lang="en_GB">Collects every channel and AceStream link published on markellinks.app and plays them through the Horus addon (script.module.horus).</description>
+        <disclaimer lang="es_ES">Los enlaces son de fuentes externas y pueden dejar de funcionar. Se recomienda VPN por los bloqueos de LaLiga y las operadoras.</disclaimer>
+        <platform>all</platform>
+        <license>GPL-2.0-only</license>
+        <language>es en</language>
+        <assets>
+            <icon>resources/icon.png</icon>
+            <fanart>resources/fanart.jpg</fanart>
+        </assets>
+    </extension>
+</addon>
