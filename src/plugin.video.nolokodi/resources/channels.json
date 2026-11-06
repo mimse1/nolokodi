@@ -38,6 +38,16 @@
           "id": "0000000000000000000000000000000000000004"
         }
       ]
+    },
+    {
+      "name": "TV Andalucía",
+      "plot": "Directos desde páginas web",
+      "links": [
+        {
+          "name": "7TV Andalucía Sevilla (directo)",
+          "web": "https://www.7tvandalucia.es/video/sevilla/sevilla-7tv-directo/20250723144948001214.html"
+        }
+      ]
     }
   ]
 }

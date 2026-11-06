@@ -3,7 +3,7 @@ import os
 import re
 import sys
 import urllib.request
-from urllib.parse import urlencode, parse_qsl
+from urllib.parse import urlencode, parse_qsl, urljoin, quote
 
 import xbmc
 import xbmcaddon
@@ -122,6 +122,16 @@ def list_links(index):
         xbmcplugin.endOfDirectory(HANDLE, succeeded=False)
         return
     for link in cat.get("links", []):
+        # Enlace web: "web": "https://..." (pagina con vídeo) o "stream": "https://...m3u8" (directo)
+        web = (link.get("web") or link.get("stream") or "").strip()
+        if web:
+            name = link.get("name", web)
+            item = make_item(name, link.get("thumb", ""), link.get("plot", ""))
+            item.setProperty("IsPlayable", "true")
+            url = build_url(action="play_web", url=web, name=name,
+                            direct="1" if link.get("stream") else "0")
+            xbmcplugin.addDirectoryItem(HANDLE, url, item, isFolder=False)
+            continue
         ace_id = extract_id(link)
         if not ace_id:
             continue
@@ -166,6 +176,89 @@ def play(ace_id, name):
             % (pkg, ace_id))
 
 
+# ----------------------------------------------------------------------------
+# Reproducción de vídeos de páginas web (p. ej. 7tvandalucia.es)
+# ----------------------------------------------------------------------------
+WEB_UA = ("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 "
+          "(KHTML, like Gecko) Chrome/124.0 Safari/537.36")
+MEDIA_RE = re.compile(r"https?://[^\s\"'<>\\()]+?\.(m3u8|mpd|mp4)(?:\?[^\s\"'<>\\()]*)?", re.I)
+IFRAME_RE = re.compile(r"<iframe[^>]+?(?:data-)?src=[\"']([^\"']+)[\"']", re.I)
+YOUTUBE_RE = re.compile(r"(?:youtube(?:-nocookie)?\.com/(?:embed/|watch\?v=)|youtu\.be/)([\w-]{11})")
+SKIP_FRAME = ("facebook.com", "twitter.com", "doubleclick", "googletagmanager", "adservice")
+
+
+def fetch_text(url, referer=None):
+    headers = {"User-Agent": WEB_UA, "Accept-Language": "es-ES,es;q=0.9"}
+    if referer:
+        headers["Referer"] = referer
+    req = urllib.request.Request(url, headers=headers)
+    with urllib.request.urlopen(req, timeout=15) as resp:
+        raw = resp.read()
+    text = raw.decode("utf-8", errors="replace")
+    # Des-escapa JSON/JS embebido: https:\/\/host\/a.m3u8  y  \u0026
+    return (text.replace("\\/", "/").replace("\\u0026", "&").replace("\\u002F", "/")
+            .replace("&amp;", "&"))
+
+
+def find_media(url, depth=0, seen=None):
+    """Busca m3u8/mpd/mp4 en la página y, si hace falta, dentro de sus iframes."""
+    seen = seen if seen is not None else set()
+    if url in seen or depth > 2:
+        return []
+    seen.add(url)
+    try:
+        text = fetch_text(url, referer=url if depth else None)
+    except Exception as exc:
+        log("No se pudo leer %s: %s" % (url, exc), xbmc.LOGWARNING)
+        return []
+    found = []
+    for m in MEDIA_RE.finditer(text):
+        if m.group(0) not in [f[0] for f in found]:
+            found.append((m.group(0), url))
+    yt = YOUTUBE_RE.search(text)
+    if yt and not found:
+        found.append(("plugin://plugin.video.youtube/play/?video_id=" + yt.group(1), url))
+    if not found:
+        for src in IFRAME_RE.findall(text):
+            frame = urljoin(url, src)
+            if frame.startswith("http") and not any(b in frame for b in SKIP_FRAME):
+                found += find_media(frame, depth + 1, seen)
+                if found:
+                    break
+    return found
+
+
+def play_web(page_url, name, direct=False):
+    if direct:
+        media, referer = page_url, ""
+    else:
+        found = find_media(page_url)
+        if not found:
+            log("Sin vídeo en %s" % page_url, xbmc.LOGERROR)
+            xbmcgui.Dialog().notification(ADDON.getAddonInfo("name"),
+                                          "No se encontró el vídeo en la página",
+                                          xbmcgui.NOTIFICATION_ERROR, 5000)
+            xbmcplugin.setResolvedUrl(HANDLE, False, xbmcgui.ListItem())
+            return
+        # Preferencia: m3u8 > mpd > mp4 > resto
+        order = {"m3u8": 0, "mpd": 1, "mp4": 2}
+        found.sort(key=lambda f: order.get(f[0].split("?")[0].rsplit(".", 1)[-1].lower(), 3))
+        media, referer = found[0]
+    log("Reproduciendo %s (origen %s)" % (media, referer or page_url))
+    if media.startswith("plugin://"):
+        path = media
+    else:
+        ref = referer or page_url
+        origin = "/".join(ref.split("/")[:3]) + "/"
+        path = "%s|User-Agent=%s&Referer=%s&Origin=%s" % (
+            media, quote(WEB_UA), quote(ref, safe=""), quote(origin, safe=""))
+    item = xbmcgui.ListItem(label=name, path=path)
+    if ".m3u8" in media.lower():
+        item.setMimeType("application/vnd.apple.mpegurl")
+        item.setContentLookup(False)
+    xbmcplugin.setResolvedUrl(HANDLE, True, item)
+
+
 def router(paramstring):
     params = dict(parse_qsl(paramstring.lstrip("?")))
     action = params.get("action")
@@ -173,6 +266,8 @@ def router(paramstring):
         list_links(params.get("index", 0))
     elif action == "set_url":
         set_url()
+    elif action == "play_web":
+        play_web(params.get("url", ""), params.get("name", ""), params.get("direct") == "1")
     elif action == "play":
         play(params.get("id", ""), params.get("name", ""))
     else:
