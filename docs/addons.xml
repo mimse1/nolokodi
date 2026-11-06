@@ -2,7 +2,7 @@
 <addons>
 <addon id="plugin.video.nolokodi"
        name="Nolokodi"
-       version="1.0.2"
+       version="1.0.3"
        provider-name="mimse1">
   <requires>
     <import addon="xbmc.python" version="3.0.1"/>

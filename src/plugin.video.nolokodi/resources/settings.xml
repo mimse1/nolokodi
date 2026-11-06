@@ -42,7 +42,7 @@
         </setting>
         <setting id="remote_url" type="string" label="30014">
           <level>0</level>
-          <default></default>
+          <default>https://drive.google.com/file/d/1gOMQar4p_m0TkxZS3caPL0l31CY1PPcJ/view?usp=drive_link</default>
           <control type="edit" format="string"><heading>30014</heading></control>
         </setting>
       </group>
