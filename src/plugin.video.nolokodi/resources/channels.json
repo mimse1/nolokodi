@@ -1,0 +1,43 @@
+{
+  "categories": [
+    {
+      "name": "Deportes",
+      "thumb": "",
+      "plot": "Eventos deportivos",
+      "links": [
+        {
+          "name": "Movistar Liga Campeones 3",
+          "url": "acestream://c6c9cd6cf39c3fe04d2ca3152f6ee13714cd390b"
+        },
+        {
+          "name": "Ejemplo Deportes 1",
+          "id": "0000000000000000000000000000000000000001",
+          "thumb": "",
+          "plot": "Sustituye este ID por un hash Acestream real"
+        },
+        {
+          "name": "Ejemplo Deportes 2",
+          "url": "acestream://0000000000000000000000000000000000000002"
+        }
+      ]
+    },
+    {
+      "name": "Cine",
+      "links": [
+        {
+          "name": "Ejemplo Cine 1",
+          "id": "0000000000000000000000000000000000000003"
+        }
+      ]
+    },
+    {
+      "name": "Documentales",
+      "links": [
+        {
+          "name": "Ejemplo Documental 1",
+          "id": "0000000000000000000000000000000000000004"
+        }
+      ]
+    }
+  ]
+}

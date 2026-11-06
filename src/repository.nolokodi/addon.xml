@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<addon id="repository.nolokodi" name="Repositorio Nolokodi" version="1.0.0" provider-name="mimse1">
+  <extension point="xbmc.addon.repository" name="Repositorio Nolokodi">
+    <dir>
+      <info compressed="false">https://mimse1.github.io/nolokodi/addons.xml</info>
+      <checksum>https://mimse1.github.io/nolokodi/addons.xml.md5</checksum>
+      <datadir zip="true">https://mimse1.github.io/nolokodi/</datadir>
+    </dir>
+  </extension>
+  <extension point="xbmc.addon.metadata">
+    <summary>Repositorio de addons de mimse1</summary>
+    <description>Repositorio para instalar y actualizar Nolokodi.</description>
+    <platform>all</platform>
+    <assets><icon>icon.png</icon></assets>
+  </extension>
+</addon>

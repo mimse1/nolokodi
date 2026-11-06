@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<addons>
+<addon id="plugin.video.nolokodi"
+       name="Nolokodi"
+       version="1.0.2"
+       provider-name="mimse1">
+  <requires>
+    <import addon="xbmc.python" version="3.0.1"/>
+  </requires>
+  <extension point="xbmc.python.pluginsource" library="main.py">
+    <provides>video</provides>
+  </extension>
+  <extension point="xbmc.addon.metadata">
+    <platform>all</platform>
+    <summary lang="es_ES">Categorías de enlaces Acestream editables desde un JSON</summary>
+    <summary lang="en_GB">Acestream link categories editable from a JSON file</summary>
+    <description lang="es_ES">Muestra categorías y, dentro de cada una, enlaces Acestream. Todo el contenido se define en resources/channels.json (o en una URL remota), por lo que es muy fácil de modificar desde GitHub.</description>
+    <description lang="en_GB">Shows categories and, inside each one, Acestream links. All content is defined in resources/channels.json (or a remote URL), so it is easy to edit from GitHub.</description>
+    <license>MIT</license>
+    <source>https://github.com/mimse1/kodi-acestream-addon</source>
+    <assets>
+      <icon>icon.png</icon>
+      <fanart>icon.png</fanart>
+    </assets>
+  </extension>
+</addon>
+<addon id="repository.nolokodi" name="Repositorio Nolokodi" version="1.0.0" provider-name="mimse1">
+  <extension point="xbmc.addon.repository" name="Repositorio Nolokodi">
+    <dir>
+      <info compressed="false">https://mimse1.github.io/nolokodi/addons.xml</info>
+      <checksum>https://mimse1.github.io/nolokodi/addons.xml.md5</checksum>
+      <datadir zip="true">https://mimse1.github.io/nolokodi/</datadir>
+    </dir>
+  </extension>
+  <extension point="xbmc.addon.metadata">
+    <summary>Repositorio de addons de mimse1</summary>
+    <description>Repositorio para instalar y actualizar Nolokodi.</description>
+    <platform>all</platform>
+    <assets><icon>icon.png</icon></assets>
+  </extension>
+</addon>
+</addons>

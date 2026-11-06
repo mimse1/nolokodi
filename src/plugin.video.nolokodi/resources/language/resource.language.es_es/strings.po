@@ -1,0 +1,60 @@
+msgid ""
+msgstr ""
+"Content-Type: text/plain; charset=UTF-8\n"
+"Language: es_ES\n"
+
+msgctxt "#30000"
+msgid "Reproducción"
+msgstr "Reproducción"
+
+msgctxt "#30001"
+msgid "Método de reproducción"
+msgstr "Método de reproducción"
+
+msgctxt "#30002"
+msgid "Motor Acestream (HTTP)"
+msgstr "Motor Acestream (HTTP)"
+
+msgctxt "#30003"
+msgid "Horus (script.module.horus)"
+msgstr "Horus (script.module.horus)"
+
+msgctxt "#30004"
+msgid "Plexus (program.plexus)"
+msgstr "Plexus (program.plexus)"
+
+msgctxt "#30005"
+msgid "Android: app Ace Stream"
+msgstr "Android: app Ace Stream"
+
+msgctxt "#30006"
+msgid "IP del motor Acestream"
+msgstr "IP del motor Acestream"
+
+msgctxt "#30007"
+msgid "Puerto del motor Acestream"
+msgstr "Puerto del motor Acestream"
+
+msgctxt "#30008"
+msgid "Paquete Android de Ace Stream"
+msgstr "Paquete Android de Ace Stream"
+
+msgctxt "#30010"
+msgid "No se pudo cargar la lista remota, usando la local"
+msgstr "No se pudo cargar la lista remota, usando la local"
+
+msgctxt "#30011"
+msgid "Error al leer channels.json. Revisa que el JSON sea válido."
+msgstr "Error al leer channels.json. Revisa que el JSON sea válido."
+
+msgctxt "#30012"
+msgid "Origen de la lista"
+msgstr "Origen de la lista"
+
+msgctxt "#30013"
+msgid "Cargar lista desde URL remota (GitHub raw)"
+msgstr "Cargar lista desde URL remota (GitHub raw)"
+
+msgctxt "#30014"
+msgid "URL remota de channels.json"
+msgstr "URL remota de channels.json"
